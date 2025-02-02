@@ -1,0 +1,100 @@
+<div class="po-row" style="margin-bottom: 2%; display: flex; flex-direction: column;">
+  
+  <po-select
+    class="po-md-2"
+    name="select"
+    p-label="Online"
+    [p-options]="[
+      { label: 'Todos', value: '1' },
+      { label: 'Online Vivo', value: '2' },
+      { label: 'Online Velonic', value: '3' }
+    ]"
+    (p-change)="this.changed($event)"
+    
+  >
+  </po-select>
+
+  <po-button
+      class="po-md-2"
+      p-icon="po-icon-plus"
+      p-label="Incluir"
+      p-small="false"
+      p-type="default"
+      (p-click)="Incluir()">
+  </po-button> 
+</div>
+
+<div class="po-row">
+  <div class="po-md-12">
+    <po-table
+    [p-auto-collapse]="true"
+    [p-hide-columns-manager]="true"
+    [p-hide-table-search]="false"
+    [p-items]="usuarios"
+    [p-sort]="true"
+    [p-striped]="true"
+    [p-actions]="actions"
+    [p-actions-right]="true"
+    [p-columns]="columns"
+    [p-show-more-disabled]="true"
+    [p-hide-columns-manager]="false"
+    [p-striped]="true"
+    [p-show-more-disabled]="true"
+    [p-selectable-entire-line]="true"
+    [p-hide-detail]="true"
+    [p-draggable]="true"
+    >
+  
+  </po-table>
+  </div>
+
+  <po-modal
+      #modal
+      [p-title]="usuario.name"
+      p-size="auto"
+      [p-click-out]="true"
+      [p-hide-close]="false"
+      [p-secondary-action]="confirm"
+  >
+    <po-info
+        p-label="Ação: Bloquear Usuário"
+        p-value="Tem certeza que deseja bloquear o usuário: {{usuario.name}} ?">
+    </po-info>
+
+  </po-modal>
+
+  <po-modal
+      #modalDetail
+      p-title="Detalhes"
+      p-size="auto"
+      [p-click-out]="true"
+      [p-hide-close]="false"
+  >
+    <po-dynamic-form
+        [p-fields]="fields"
+        [p-value]="usuario" >
+    </po-dynamic-form>
+
+  </po-modal>
+
+  <po-modal
+      #modalEdit
+      p-title="Editar"
+      p-size="auto"
+      [p-click-out]="true"
+      [p-hide-close]="false"
+  >
+    <po-info
+        p-label="Ação: Editar Usuário"
+        p-value="Esta ação irá editar o usuário: {{usuario.name}}, tenha certeza da sua edição, ela pode afetar alguém!">
+    </po-info>
+    <br>
+    <po-dynamic-form
+      [p-fields]="fieldsEdit"
+      [p-value]="usuario"
+      [p-validate]="this.onChangeFields.bind(this)" >
+    </po-dynamic-form>
+
+  </po-modal>
+  
+</div>

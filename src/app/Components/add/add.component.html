@@ -1,0 +1,17 @@
+<h3>Adicionar</h3>
+
+<po-dynamic-form
+        p-auto-focus=""
+        [p-fields]="fields"
+        [p-value]="valor"
+        [p-validate]="this.onChangeFields.bind(this)" >
+</po-dynamic-form>
+<br>
+<po-button
+        class="po-md-12"
+        p-icon="po-icon-plus"
+        p-label="Adicionar novo usuário"
+        p-small="false"
+        p-type="default"
+        (p-click)="newUser()">
+</po-button>

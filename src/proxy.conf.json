@@ -1,0 +1,7 @@
+{
+    "/mikrotik": {
+        "target": "http://localhost:9093/",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
