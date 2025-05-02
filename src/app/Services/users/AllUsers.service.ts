@@ -26,12 +26,12 @@ export class AllUsers {
 
   public async cruzaInfosIp(): Promise<any[]> {
     try {
-      // Inicializa as listas para evitar falhas se um dos serviços falhar
-      let ativosVelonic: any[] = [];
+      let ativosVelonic: Active[] = [];
       let ativosVivo: any[] = [];
       let usuariosVelonic: any[] = [];
       let usuariosVivo: any[] = [];
   
+      // Captura os dados de cada serviço com tratamento de erros
       try {
         ativosVelonic = await this.userServiceActive.getUsuariosAtivos() || [];
       } catch (err) {
@@ -56,8 +56,8 @@ export class AllUsers {
         console.error("Erro ao buscar usuários Vivo:", err);
       }
   
+      // Atualiza a lista de usuários Velonic com informações dos ativos
       const updatedList = usuariosVelonic.map((user: any) => {
-        // Evita falhas ao acessar `undefined` usando valores padrão ou checagem
         const isActiveVelonic = ativosVelonic.some((activeUser: any) => activeUser?.name === user?.name);
         const isActiveVivo = ativosVivo.some((activeUser: any) => activeUser?.name === user?.name);
   
@@ -71,6 +71,17 @@ export class AllUsers {
         if (velonicLastLog === 'jan/01/1970 00:00:00') {
           velonicLastLog = 'N/A';
         }
+        
+        
+        // Adiciona os atributos dos usuários ativos Velonic ao usuário correspondente
+        let upTime = 'N/A'; // Default caso não esteja ativo
+        if (isActiveVelonic) {
+          const activeVelonicInfo = ativosVelonic.find((activeUser: any) => activeUser?.name === user?.name);
+          if (activeVelonicInfo) {
+            user = { ...user, ...activeVelonicInfo };
+            upTime = activeVelonicInfo.upTime || 'N/A'; // Insere o atributo upTime
+          }
+        }
   
         return {
           ...user,
@@ -78,6 +89,7 @@ export class AllUsers {
           online_Velonic: isActiveVelonic ? 'yes' : 'no',
           lastLogVivo: vivoLastLog,
           lastLogVelonic: velonicLastLog,
+          upTime, // Inclui o atributo upTime no retorno
         };
       });
   

@@ -4,4 +4,5 @@ export interface Active {
     disabled: string
     name: string
     address: string
+    upTime: string
 }

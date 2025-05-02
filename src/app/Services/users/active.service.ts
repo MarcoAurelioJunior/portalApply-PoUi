@@ -27,7 +27,8 @@ export class ActiveService {
               disabled: 'false',
               address: el.address,
               name: el.name,
-              online: 'yes'
+              online: 'yes',
+              upTime: el.uptime
             });
           });
         },

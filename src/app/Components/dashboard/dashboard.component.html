@@ -1,6 +1,52 @@
 <h1>DashBoard</h1>
 
-<po-chart
-    [p-series]="values"
->
-</po-chart>
+<div style="margin-top:2%;">
+    <po-widget title="Dash" class="po-md-4" [p-height]="130" >
+        <div class="po-font-text-large po-text-center">Maior UpTime</div>
+        <div class="po-font-title po-text-center">{{highValueTxt}}</div>
+        <div class="po-font-text-large po-text-center" >{{highName}}</div>
+    </po-widget>
+    <po-widget title="Dash" class="po-md-4" [p-height]="130">
+        <div class="po-font-text-large po-text-center">Último acesso</div>
+        <div class="po-font-title po-text-center">{{lastLog}}</div>
+        <div class="po-font-text-large po-text-center" >{{highName}}</div>
+    </po-widget>
+    <po-widget title="Dash" class="po-md-4" [p-height]="130" style="margin-bottom:1.2%;">
+        <div class="po-font-text-large po-text-center">Perfil</div>
+        <div class="po-font-title po-text-center">{{service}}</div>
+        <div class="po-font-text-large po-text-center" >{{highName}}</div>
+    </po-widget>
+</div>
+    
+<div>
+    
+    <po-widget title="Dash" class="po-md-12" style="margin-bottom:1.2%;" [p-height]="520">
+        <po-table
+        [p-auto-collapse]="true"
+        [p-hide-columns-manager]="true"
+        [p-hide-table-search]="false"
+        [p-items]="retItemOff"
+        [p-sort]="true"
+        [p-striped]="true"
+        [p-actions-right]="true"
+        [p-columns]="columns"
+        [p-show-more-disabled]="true"
+        [p-hide-columns-manager]="false"
+        [p-striped]="true"
+        [p-show-more-disabled]="true"
+        [p-selectable]="true"
+        (p-selected)="usuarioSelecionado($event)"
+        [p-single-select]="true"
+        [p-hide-detail]="true"
+        [p-draggable]="true"
+        [p-height]="400"
+        ></po-table>
+            
+    </po-widget>
+
+
+</div>
+
+
+
+

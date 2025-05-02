@@ -18,7 +18,9 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@animaliads/animalia-icon": "^1.0.3",
     "@po-ui/ng-components": "^17.26.11",
+    "@po-ui/ng-templates": "^17.26.11",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

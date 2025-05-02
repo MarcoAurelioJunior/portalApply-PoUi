@@ -1,5 +1,5 @@
 import { Component, inject, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { PoComboComponent, PoDynamicFormField, PoDynamicFormValidation, PoModalAction, PoModalComponent, PoMultiselectOption, PoTableAction, PoTableColumn, PoTableComponent, PoTableModule } from '@po-ui/ng-components';
+import { PoComboComponent, PoDynamicFormField, PoDynamicFormValidation, PoModalAction, PoModalComponent, PoMultiselectOption, PoTableAction, PoTableColumn, PoTableComponent, PoTableModule, PoTabsModule } from '@po-ui/ng-components';
 import { environment } from '../../../environments/environment.development';
 import { Usuarios } from '../../Interfaces/usuarios';
 import { UsersService } from '../../Services/users/users.service';
@@ -25,7 +25,7 @@ import { AllUsers } from '../../Services/users/AllUsers.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PoTableModule, PoButtonModule, PoFieldModule, PoInfoModule, PoDynamicModule, FormComponent, PoModalModule],
+  imports: [PoTableModule, PoButtonModule, PoFieldModule, PoInfoModule, PoDynamicModule, FormComponent, PoModalModule, PoTabsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -40,6 +40,8 @@ export class HomeComponent implements OnInit {
   //Inject do serviço de Usuários
   
   public allUsers = inject(AllUsers)
+  public ativos = inject(ActiveService)
+  public ativosVivo = inject(ActiveVivoService)
 
   //Inject de manipulação dos usuários
   public blockUser = inject(BlockUserService)
@@ -51,11 +53,18 @@ export class HomeComponent implements OnInit {
   public newPassword: string = ''
 
   public usuarios: Array<Usuarios> = []
+  public usuariosVelonic: Array<any> = []
+
   public usuario = {} as Usuarios
   public usuariosAtivos: Array<any> = []
+  public usuariosAtivosVivo: Array<any> = []
+
+  private bloqueado: any
 
   public tabelas: any
+
   public columns: Array<PoTableColumn> = []
+  public columnsVel: Array<PoTableColumn> = []
 
   person = {}
 
@@ -77,7 +86,7 @@ export class HomeComponent implements OnInit {
 
   public actions: Array<PoTableAction> = [
     {label: 'Detalhes', action: this.Detalhes.bind(this)}, 
-    {label: 'Bloquear', action: this.Bloquear.bind(this)}, 
+    {label: 'Bloquear/Desbloquear', action: this.Bloquear.bind(this)}, 
     {label: 'Editar', action: this.Editar.bind(this)}
   ]
 
@@ -89,9 +98,14 @@ export class HomeComponent implements OnInit {
   async ngOnInit(): Promise<void> {  
     
     this.usuarios = await this.allUsers.cruzaInfosIp()
+    this.usuariosAtivos = await this.ativos.getUsuariosAtivos()
+    this.usuariosAtivosVivo = await this.ativosVivo.getUsuariosAtivosVivo()
+    
     this.columns = this.getColumns()
+    this.columnsVel = this.getColumnsVel()
 
-    console.log(environment.usuarios)
+    this.notification.setDefaultDuration(3000)
+
   }
 
 
@@ -129,6 +143,32 @@ export class HomeComponent implements OnInit {
       },
       {property: 'lastLogVelonic', label: 'Último acesso Velonic'},
       {property: 'lastLogVivo', label: 'Último acesso Vivo'},
+    ]
+  }
+
+  getColumnsVel(): Array<PoTableColumn> {
+    return [
+      {
+        property: 'disabled', 
+        type: 'label',
+        width:'5%',
+        labels: [
+          {value: 'true', icon: 'ph ph-prohibit', label: 'Bloqueado', color: 'darkred'},
+          {value: 'false', icon: 'ph ph-check', label: 'Autorizado', color: 'blue'},
+        ]
+      },
+      {property: 'name', label: 'Nome'},
+      {property: 'address', label: 'Endereço'},
+      {
+        property: 'online',
+        label:'Online Velonic',
+        type: 'label',
+        labels: [
+          {value: 'yes', label: 'Online', color: 'green', icon: 'ph ph-cell-signal-full'},
+          {value: 'no', label: 'Offline', color: 'red', icon: 'ph ph-cell-signal-x'},
+        ]
+      },
+      {property: 'upTime', label: 'Tempo de acesso'},
     ]
   }
 
@@ -174,12 +214,16 @@ export class HomeComponent implements OnInit {
     this.usuario.name = user.name
     this.usuario.disabled = user.disabled
 
+    if(this.usuario.disabled === false){
+      this.bloqueado = {label: 'Bloquear/Desbloquear', action: this.Bloquear.bind(this)}
+    }else{
+      this.bloqueado = {label: 'Desbloquear', action: this.Bloquear.bind(this)}
+    }
+
   }
 
   async confirmExc() {
     try {
-      console.log("Valor de this.usuario.disabled:", this.usuario.disabled);
-      console.log("Tipo de this.usuario.disabled:", typeof this.usuario.disabled);
   
       // Converte o valor para string, removendo espaços em branco
       const isDisabledString = String(this.usuario.disabled).trim().toLowerCase();
@@ -189,14 +233,13 @@ export class HomeComponent implements OnInit {
   
       // Define o status com base no valor tratado
       const block = isDisabled ? 'no' : 'yes';
-  
-      console.log("Status calculado (block):", block);
-  
+
       // Fecha o modal e chama o método blockUser
       this.modalComp.close();
       await this.blockUser.blockUser(this.usuario.name, block);
       this.usuarios = await this.allUsers.cruzaInfosIp()
       this.notification.success('Usuário bloqueado/desbloqueado com sucesso!')
+      
     } catch (error) {
       console.error("Erro em confirmExc:", error);
       this.notification.error('Erro ao bloquear/desbloquear usuário!')
@@ -220,7 +263,7 @@ export class HomeComponent implements OnInit {
     action: () => {
       this.confirmExc()
     },
-    label: 'Bloquear',
+    label: 'Bloquear/Desbloquear',
     danger: true
   };
 
@@ -241,4 +284,11 @@ export class HomeComponent implements OnInit {
     {property: 'password', label: 'Senha', disabled: false},
     {property: 'profile', label: 'Profile', disabled: true},
   ]
+
+  async Atualizar(){
+    this.usuarios = await this.allUsers.cruzaInfosIp()
+    this.usuariosAtivos = await this.ativos.getUsuariosAtivos()
+    this.usuariosAtivosVivo = await this.ativosVivo.getUsuariosAtivosVivo()
+
+  }
 }

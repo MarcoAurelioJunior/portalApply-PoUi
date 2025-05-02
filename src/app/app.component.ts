@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
+import { LoginComponent } from './Components/login/login.component';
 
 import {
   PoMenuItem,
@@ -21,6 +22,7 @@ import {
     PoMenuModule,
     PoPageModule,
     HttpClientModule,
+    LoginComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

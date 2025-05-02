@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+    --color-table-background-color-row-strip: rgb(190, 190, 230);
+    --color-widget-color-action-active: blue;
+}

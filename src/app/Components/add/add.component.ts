@@ -29,8 +29,8 @@ export class AddComponent {
   
     public fields2(): Array<PoDynamicFormField> {
       return [
-        {property: 'name', label: 'Nome', disabled: false},
-        {property: 'password', label: 'Senha', disabled: false},
+        {property: 'name', label: 'Nome', disabled: false, required:true},
+        {property: 'password', label: 'Senha', disabled: false, required: true},
         {
           property: 'Profile', 
           label: 'Perfil', 
@@ -70,5 +70,4 @@ export class AddComponent {
         this.notif.error('Erro ao cadastrar usuário!')
       }
     }
-
 }

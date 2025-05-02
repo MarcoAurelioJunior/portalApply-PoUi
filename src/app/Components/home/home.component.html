@@ -1,6 +1,99 @@
+<div style="display: flex; flex-direction: inline;">
+  <po-button
+    class="po-md-2"
+    p-icon="po-icon-plus"
+    p-label="Incluir"
+    p-small="false"
+    p-type="default"
+    (p-click)="Incluir()">
+  </po-button> 
+  <po-button
+      class="po-md-2"
+      p-label="Atualizar"
+      p-type="default"
+      (p-click)="Atualizar()">
+  </po-button>
+</div>
+
 <div class="po-row" style="margin-bottom: 2%; display: flex; flex-direction: column;">
   
-  <po-select
+  <po-tabs>
+    <po-tab p-label="Todos os usuários" [p-active]="true">
+
+      <po-table
+        [p-auto-collapse]="true"
+        [p-hide-columns-manager]="true"
+        [p-hide-table-search]="false"
+        [p-items]="usuarios"
+        [p-sort]="true"
+        [p-striped]="true"
+        [p-actions]="actions"
+        [p-actions-right]="true"
+        [p-columns]="columns"
+        [p-show-more-disabled]="true"
+        [p-hide-columns-manager]="false"
+        [p-striped]="true"
+        [p-show-more-disabled]="true"
+        [p-selectable-entire-line]="true"
+        [p-hide-detail]="true"
+        [p-draggable]="true"
+        [p-height]="410"
+        >
+      
+      </po-table>
+
+    </po-tab>
+    <po-tab p-label="Velonic">
+
+      <po-table
+        [p-auto-collapse]="true"
+        [p-hide-columns-manager]="true"
+        [p-hide-table-search]="false"
+        [p-items]="usuariosAtivos"
+        [p-columns]="columnsVel"
+        [p-sort]="true"
+        [p-striped]="true"
+        [p-actions]="actions"
+        [p-actions-right]="true"
+        [p-show-more-disabled]="true"
+        [p-hide-columns-manager]="false"
+        [p-striped]="true"
+        [p-show-more-disabled]="true"
+        [p-selectable-entire-line]="true"
+        [p-hide-detail]="true"
+        [p-draggable]="true"
+        [p-height]="410"
+        >
+      
+      </po-table>
+    </po-tab>
+    <po-tab p-label="Vivo">
+      
+      <po-table
+        [p-auto-collapse]="true"
+        [p-hide-columns-manager]="true"
+        [p-hide-table-search]="false"
+        [p-items]="usuariosAtivosVivo"
+        [p-sort]="true"
+        [p-striped]="true"
+        [p-actions]="actions"
+        [p-actions-right]="true"
+        [p-columns]="columnsVel"
+        [p-show-more-disabled]="true"
+        [p-hide-columns-manager]="false"
+        [p-striped]="true"
+        [p-show-more-disabled]="true"
+        [p-selectable-entire-line]="true"
+        [p-hide-detail]="true"
+        [p-draggable]="true"
+        [p-height]="410"
+        >
+      
+      </po-table>
+    </po-tab>
+  </po-tabs>
+
+  <!-- <po-select
     class="po-md-2"
     name="select"
     p-label="Online"
@@ -12,42 +105,12 @@
     (p-change)="this.changed($event)"
     
   >
-  </po-select>
+  </po-select> -->
 
-  <po-button
-      class="po-md-2"
-      p-icon="po-icon-plus"
-      p-label="Incluir"
-      p-small="false"
-      p-type="default"
-      (p-click)="Incluir()">
-  </po-button> 
+  
 </div>
 
 <div class="po-row">
-  <div class="po-md-12">
-    <po-table
-    [p-auto-collapse]="true"
-    [p-hide-columns-manager]="true"
-    [p-hide-table-search]="false"
-    [p-items]="usuarios"
-    [p-sort]="true"
-    [p-striped]="true"
-    [p-actions]="actions"
-    [p-actions-right]="true"
-    [p-columns]="columns"
-    [p-show-more-disabled]="true"
-    [p-hide-columns-manager]="false"
-    [p-striped]="true"
-    [p-show-more-disabled]="true"
-    [p-selectable-entire-line]="true"
-    [p-hide-detail]="true"
-    [p-draggable]="true"
-    >
-  
-  </po-table>
-  </div>
-
   <po-modal
       #modal
       [p-title]="usuario.name"

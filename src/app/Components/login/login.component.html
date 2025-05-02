@@ -1,2 +1,5 @@
-<p>login works!</p>
-<button (click)="click()">Logar</button>
+<po-page-login
+    #loginPage
+    [p-hide-remember-user]="true"
+    (p-login-submit)="onLoginSubmit(loginPage)">
+</po-page-login>

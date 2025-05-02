@@ -18,8 +18,6 @@ export class UpdatePassword {
         password: newPass
     };
 
-    console.log(bodyReq); // Log para depuração
-
     // Configura o cliente para esperar texto puro na resposta
     return this.#http.post(environment.updatePass, bodyReq, { responseType: 'text' })
         .toPromise()
